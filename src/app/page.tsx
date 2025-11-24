@@ -1,65 +1,79 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import UploadButton from '@/components/UploadButton';
+import HistoryList from '@/components/HistoryList';
+import { HistoryItem } from '@/lib/storage';
+
+const Viewer = dynamic(() => import('@/components/Viewer'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[600px] flex items-center justify-center bg-gray-100 text-gray-500">
+      Loading Viewer...
+    </div>
+  ),
+});
 
 export default function Home() {
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [selectedUrl, setSelectedUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  async function fetchHistory() {
+    try {
+      const res = await fetch('/api/history');
+      if (res.ok) {
+        const data = await res.json();
+        setHistory(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch history', error);
+    }
+  }
+
+  function handleUploadComplete(item: HistoryItem) {
+    setHistory((prev) => [item, ...prev]);
+    handleSelect(item);
+  }
+
+  function handleSelect(item: HistoryItem) {
+    // Construct the URL for the file
+    // Since the file is served via the download API, we can use that URL
+    // But Mol* might need a direct file URL or we can fetch it and pass data.
+    // For simplicity, let's use the download URL which serves the file content.
+    // However, Mol* download builder expects a URL that returns the file.
+    // Our /api/download/[id] returns the file with octet-stream.
+    // Let's try passing that URL.
+    const url = `/api/download/${item.id}`;
+    setSelectedUrl(url);
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <header className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-gray-900">Mol* Viewer</h1>
+          <UploadButton onUploadComplete={handleUploadComplete} />
+        </header>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-1">
+            <div className="bg-white p-4 rounded-xl shadow-sm border">
+              <HistoryList history={history} onSelect={handleSelect} />
+            </div>
+          </div>
+
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-[600px]">
+              <Viewer url={selectedUrl} />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
