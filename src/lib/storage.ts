@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 const UPLOADS_DIR = path.join(process.cwd(), 'uploads');
 const HISTORY_FILE = path.join(process.cwd(), 'history.json');
@@ -22,7 +21,16 @@ export interface HistoryItem {
 
 export async function saveFile(file: File): Promise<HistoryItem> {
   const buffer = Buffer.from(await file.arrayBuffer());
-  const id = uuidv4();
+
+  // Generate a unique 4-character alphanumeric ID
+  let id = '';
+  const history = await getHistory();
+  const existingIds = new Set(history.map(item => item.id));
+
+  do {
+    id = Math.random().toString(36).substring(2, 6).toUpperCase();
+  } while (existingIds.has(id));
+
   const extension = path.extname(file.name);
   const fileName = `${id}${extension}`;
   const filePath = path.join(UPLOADS_DIR, fileName);
@@ -36,7 +44,6 @@ export async function saveFile(file: File): Promise<HistoryItem> {
     timestamp: Date.now(),
   };
 
-  const history = await getHistory();
   history.unshift(item);
   await fs.promises.writeFile(HISTORY_FILE, JSON.stringify(history, null, 2));
 

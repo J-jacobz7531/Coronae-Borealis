@@ -53,24 +53,20 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-8">
+    <main className="min-h-screen bg-slate-950 p-8 text-white">
       <div className="max-w-7xl mx-auto space-y-6">
         <header className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Mol* Viewer</h1>
+          <h1 className="text-3xl font-bold text-white">Mol* Viewer</h1>
           <UploadButton onUploadComplete={handleUploadComplete} />
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1">
-            <div className="bg-white p-4 rounded-xl shadow-sm border">
-              <HistoryList history={history} onSelect={handleSelect} />
-            </div>
+        <div className="grid grid-cols-1 gap-6">
+          <div className="bg-slate-900 rounded-xl shadow-sm border border-slate-800 overflow-hidden h-[600px]">
+            <Viewer url={selectedUrl} />
           </div>
 
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden h-[600px]">
-              <Viewer url={selectedUrl} />
-            </div>
+          <div className="">
+            <HistoryList history={history} onSelect={handleSelect} />
           </div>
         </div>
       </div>
