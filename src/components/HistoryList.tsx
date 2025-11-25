@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { HistoryItem } from '@/lib/storage';
-import { Eye, Trash2 } from 'lucide-react';
 
 interface HistoryListProps {
     history: HistoryItem[];
@@ -10,65 +9,40 @@ interface HistoryListProps {
 }
 
 export default function HistoryList({ history, onSelect }: HistoryListProps) {
-    function formatDate(timestamp: number) {
-        return new Date(timestamp).toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            hour12: true,
-        });
-    }
-
     return (
-        <div className="w-full overflow-hidden rounded-lg border border-slate-700 bg-slate-900 text-slate-200 shadow-xl">
+        <div className="w-full overflow-hidden">
             <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                    <thead className="bg-slate-800 text-slate-400 uppercase tracking-wider text-xs font-medium">
+                    <thead className="bg-gray-50 dark:bg-slate-800/50 text-gray-500 dark:text-slate-400 uppercase tracking-wider text-xs font-medium">
                         <tr>
-                            <th className="px-6 py-4">Name</th>
-                            <th className="px-6 py-4">ID</th>
-                            <th className="px-6 py-4">Date Uploaded</th>
-                            <th className="px-6 py-4 text-right">Actions</th>
+                            <th className="px-4 py-3">Name</th>
+                            <th className="px-4 py-3">ID</th>
+                            <th className="px-4 py-3 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="divide-y divide-gray-200 dark:divide-slate-800">
                         {history.length === 0 ? (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">
+                                <td colSpan={3} className="px-4 py-6 text-center text-gray-500 dark:text-slate-500">
                                     No files uploaded yet.
                                 </td>
                             </tr>
                         ) : (
                             history.map((item) => (
-                                <tr key={item.id} className="hover:bg-slate-800/50 transition-colors">
-                                    <td className="px-6 py-4 font-medium text-white">
+                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group">
+                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-white truncate max-w-[120px]" title={item.originalName}>
                                         {item.originalName}
                                     </td>
-                                    <td className="px-6 py-4 font-mono text-slate-400">
+                                    <td className="px-4 py-3 font-mono text-gray-500 dark:text-slate-400 text-xs">
                                         {item.id}
                                     </td>
-                                    <td className="px-6 py-4 text-slate-400">
-                                        {formatDate(item.timestamp)}
-                                    </td>
-                                    <td className="px-6 py-4 text-right">
-                                        <div className="flex items-center justify-end gap-3">
-                                            <button
-                                                onClick={() => onSelect(item)}
-                                                className="text-slate-400 hover:text-blue-400 transition-colors"
-                                                title="View"
-                                            >
-                                                <Eye className="w-5 h-5" />
-                                            </button>
-                                            <button
-                                                className="text-slate-400 hover:text-red-400 transition-colors"
-                                                title="Delete (Not Implemented)"
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
-                                        </div>
+                                    <td className="px-4 py-3 text-right">
+                                        <button
+                                            onClick={() => onSelect(item)}
+                                            className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors text-xs font-medium"
+                                        >
+                                            View
+                                        </button>
                                     </td>
                                 </tr>
                             ))

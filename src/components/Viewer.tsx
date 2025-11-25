@@ -14,29 +14,45 @@ interface ViewerProps {
 export default function Viewer({ url }: ViewerProps) {
     const parentRef = useRef<HTMLDivElement>(null);
     const pluginRef = useRef<PluginUIContext | null>(null);
+    const isInitializedRef = useRef<boolean>(false);
 
     useEffect(() => {
         async function init() {
-            if (!parentRef.current || pluginRef.current) return;
+            if (!parentRef.current || pluginRef.current || isInitializedRef.current) return;
 
-            const plugin = await createPluginUI({
-                target: parentRef.current,
-                spec: DefaultPluginSpec(),
-                render: renderReact18,
-            });
+            isInitializedRef.current = true;
 
-            pluginRef.current = plugin;
+            // Clear any existing content in the parent element
+            if (parentRef.current) {
+                parentRef.current.innerHTML = '';
+            }
 
-            if (url) {
-                loadStructure(url);
+            try {
+                const plugin = await createPluginUI({
+                    target: parentRef.current,
+                    spec: DefaultPluginSpec(),
+                    render: renderReact18,
+                });
+
+                pluginRef.current = plugin;
+
+                if (url) {
+                    loadStructure(url);
+                }
+            } catch (error) {
+                console.error('Failed to initialize Mol* viewer', error);
+                isInitializedRef.current = false;
             }
         }
 
         init();
 
         return () => {
-            pluginRef.current?.dispose();
-            pluginRef.current = null;
+            if (pluginRef.current) {
+                pluginRef.current.dispose();
+                pluginRef.current = null;
+            }
+            isInitializedRef.current = false;
         };
     }, []);
 

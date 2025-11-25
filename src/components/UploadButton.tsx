@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Upload, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { HistoryItem } from '@/lib/storage';
 
 interface UploadButtonProps {
@@ -48,11 +48,11 @@ export default function UploadButton({ onUploadComplete }: UploadButtonProps) {
                 disabled={uploading}
             />
             <button
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 shadow-lg shadow-indigo-500/20"
                 disabled={uploading}
             >
-                {uploading ? <Loader2 className="animate-spin w-4 h-4" /> : <Upload className="w-4 h-4" />}
-                {uploading ? 'Uploading...' : 'Upload mmCIF'}
+                {uploading ? <Loader2 className="animate-spin w-4 h-4" /> : null}
+                {uploading ? 'Uploading...' : 'Upload Model'}
             </button>
         </div>
     );
