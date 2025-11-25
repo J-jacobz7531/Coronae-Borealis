@@ -22,7 +22,6 @@ export default function Viewer({ url }: ViewerProps) {
 
             isInitializedRef.current = true;
 
-            // Clear any existing content in the parent element
             if (parentRef.current) {
                 parentRef.current.innerHTML = '';
             }
@@ -67,9 +66,32 @@ export default function Viewer({ url }: ViewerProps) {
         if (!pluginRef.current) return;
 
         try {
-            const data = await pluginRef.current.builders.data.download({ url: structureUrl }, { state: { isGhost: true } });
+            // Load CIF
+            const data = await pluginRef.current.builders.data.download(
+                { url: structureUrl },
+                { state: { isGhost: true } }
+            );
+
             const trajectory = await pluginRef.current.builders.structure.parseTrajectory(data, 'mmcif');
-            await pluginRef.current.builders.structure.hierarchy.applyPreset(trajectory, 'default');
+
+            // IMPORTANT: Use correct preset for AlphaFold models
+            await pluginRef.current.builders.structure.hierarchy.applyPreset(
+                trajectory,
+                'default'
+            );
+
+            // Get the loaded structure
+            const structureRef = pluginRef.current.managers.structure.hierarchy.current.structures[0];
+
+            // Apply proper pLDDT confidence theme
+            if (structureRef) {
+                await pluginRef.current.managers.structure.component.updateRepresentationsTheme(
+                    structureRef.components,
+                    {
+                        color: 'plddt' as any
+                    }
+                );
+            }
         } catch (e) {
             console.error('Failed to load structure', e);
         }

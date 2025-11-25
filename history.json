@@ -1,44 +1,56 @@
 [
   {
-    "id": "LSZV",
-    "originalName": "fold_2025_03_07_21_01_model_1.cif",
-    "path": "LSZV.cif",
-    "timestamp": 1764047749689
+    "id": "TFLR",
+    "originalName": "AF-A0AAX3UGG4-F1-model_v6.cif",
+    "path": "TFLR.cif",
+    "timestamp": 1764094098502
   },
   {
-    "id": "D31C",
-    "originalName": "AF-A0A0F7VK63-F1-model_v6.cif",
-    "path": "D31C.cif",
-    "timestamp": 1764008529272
+    "id": "QXHS",
+    "originalName": "AF-A0A224AP92-F1-model_v6.cif",
+    "path": "QXHS.cif",
+    "timestamp": 1764086611032
+  },
+  {
+    "id": "XNQE",
+    "originalName": "AF-A0A224AP92-F1-model_v6.cif",
+    "path": "XNQE.cif",
+    "timestamp": 1732539000000
   },
   {
     "id": "YEPL",
-    "originalName": "AF-A0A0F7VK63-F1-model_v6.cif",
+    "originalName": "AF-YEPL-F1-model_v6.cif",
     "path": "YEPL.cif",
-    "timestamp": 1764006552851
-  },
-  {
-    "id": "8FL7",
-    "originalName": "fold_2025_03_07_21_01_model_3.cif",
-    "path": "8FL7.cif",
-    "timestamp": 1764004027140
-  },
-  {
-    "id": "2T7P",
-    "originalName": "fold_2025_03_07_21_01_model_4.cif",
-    "path": "2T7P.cif",
-    "timestamp": 1764003841252
+    "timestamp": 1732538900000
   },
   {
     "id": "XZGO",
-    "originalName": "fold_2025_03_07_21_01_model_2.cif",
+    "originalName": "AF-XZGO-F1-model_v6.cif",
     "path": "XZGO.cif",
-    "timestamp": 1764003788843
+    "timestamp": 1732538800000
   },
   {
-    "id": "61b710d4-7890-4ce4-9bd4-49053cc09b58",
-    "originalName": "fold_2025_03_07_21_01_model_0.cif",
-    "path": "61b710d4-7890-4ce4-9bd4-49053cc09b58.cif",
-    "timestamp": 1764001672552
+    "id": "LSZV",
+    "originalName": "AF-LSZV-F1-model_v6.cif",
+    "path": "LSZV.cif",
+    "timestamp": 1732538700000
+  },
+  {
+    "id": "D31C",
+    "originalName": "AF-D31C-F1-model_v6.cif",
+    "path": "D31C.cif",
+    "timestamp": 1732538600000
+  },
+  {
+    "id": "8FL7",
+    "originalName": "AF-8FL7-F1-model_v6.cif",
+    "path": "8FL7.cif",
+    "timestamp": 1732538500000
+  },
+  {
+    "id": "2T7P",
+    "originalName": "AF-2T7P-F1-model_v6.cif",
+    "path": "2T7P.cif",
+    "timestamp": 1732538400000
   }
 ]

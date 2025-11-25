@@ -6,6 +6,7 @@ import UploadButton from '@/components/UploadButton';
 import HistoryList from '@/components/HistoryList';
 import ThemeToggle from '@/components/ThemeToggle';
 import { TypewriterEffectSmooth } from '@/components/ui/typewriter-effect';
+
 import { HistoryItem } from '@/lib/storage';
 import { Dna, HelpCircle } from 'lucide-react';
 
@@ -159,7 +160,10 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
+
+
               </div>
+
             )}
 
             {/* History List */}

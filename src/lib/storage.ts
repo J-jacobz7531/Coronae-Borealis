@@ -55,6 +55,7 @@ export async function getHistory(): Promise<HistoryItem[]> {
     const data = await fs.promises.readFile(HISTORY_FILE, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
+    console.error('Error reading history:', error);
     return [];
   }
 }
