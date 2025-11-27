@@ -24,6 +24,9 @@ export default function Home() {
   const [selectedUrl, setSelectedUrl] = useState<string | undefined>();
   const [currentFile, setCurrentFile] = useState<HistoryItem | null>(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
+
   useEffect(() => {
     fetchHistory();
   }, []);
@@ -42,6 +45,7 @@ export default function Home() {
 
   function handleUploadComplete(item: HistoryItem) {
     setHistory(prev => [item, ...prev]);
+    setCurrentPage(1); // Reset to first page on new upload
     handleSelect(item);
   }
 
@@ -49,6 +53,16 @@ export default function Home() {
     const url = `/api/view/${item.id}`;
     setSelectedUrl(url);
     setCurrentFile(item);
+  }
+
+  // Pagination Logic
+  const totalItems = history.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentHistory = history.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  function handlePageChange(page: number) {
+    setCurrentPage(page);
   }
 
   const titleWords = [
@@ -174,7 +188,17 @@ export default function Home() {
                 </h3>
               </div>
               <div className="p-0">
-                <HistoryList history={history} onSelect={handleSelect} />
+                <HistoryList
+                  history={currentHistory}
+                  onSelect={handleSelect}
+                  pagination={{
+                    currentPage,
+                    totalPages,
+                    totalItems,
+                    itemsPerPage: ITEMS_PER_PAGE,
+                    onPageChange: handlePageChange
+                  }}
+                />
               </div>
             </div>
           </div>

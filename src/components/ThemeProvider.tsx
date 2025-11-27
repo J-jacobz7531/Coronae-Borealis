@@ -12,38 +12,21 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<Theme>('dark');
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        // Only run on client
-        const savedTheme = (typeof window !== 'undefined'
-            ? (localStorage.getItem('theme') as Theme | null)
-            : null);
-
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-            setTheme(savedTheme);
-        } else if (
-            typeof window !== 'undefined' &&
-            window.matchMedia &&
-            window.matchMedia('(prefers-color-scheme: light)').matches
-        ) {
-            setTheme('light');
-        } else {
-            setTheme('dark');
+    const [theme, setTheme] = useState<Theme>(() => {
+        // Initialize from DOM class that was set by blocking script
+        if (typeof window !== 'undefined') {
+            return document.documentElement.classList.contains('light') ? 'light' : 'dark';
         }
-
-        setMounted(true);
-    }, []);
+        return 'dark';
+    });
 
     useEffect(() => {
-        if (!mounted) return;
-
+        // Sync theme class on the DOM when state changes
         const root = window.document.documentElement;
         root.classList.remove('light', 'dark');
         root.classList.add(theme);
         localStorage.setItem('theme', theme);
-    }, [theme, mounted]);
+    }, [theme]);
 
     const toggleTheme = () => {
         setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
@@ -51,8 +34,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-            {/* Avoid hydration mismatch */}
-            {mounted ? children : null}
+            {children}
         </ThemeContext.Provider>
     );
 }
