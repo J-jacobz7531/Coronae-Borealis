@@ -68,19 +68,19 @@ export default function Home() {
   const titleWords = [
     {
       text: "Alphafold",
-      className: "text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400",
+      className: "text-red-800 dark:text-red-600",
     },
     {
       text: "VR",
-      className: "text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400",
+      className: "text-red-800 dark:text-red-600",
     },
     {
       text: "Model",
-      className: "text-indigo-600 dark:text-indigo-400",
+      className: "text-red-800 dark:text-red-600",
     },
     {
       text: "Viewer",
-      className: "text-indigo-600 dark:text-indigo-400",
+      className: "text-red-800 dark:text-red-600",
     },
   ];
 
