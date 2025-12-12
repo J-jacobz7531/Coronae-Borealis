@@ -11,8 +11,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Build the app with explicit webpack flag
+RUN npm run build -- --webpack
 
 # Expose port
 EXPOSE 3000

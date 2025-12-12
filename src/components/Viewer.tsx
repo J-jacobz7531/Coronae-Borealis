@@ -24,33 +24,33 @@ const pLDDTColors = {
 };
 
 // Custom pLDDT Color Theme Provider
-const pLDDTColorThemeProvider: ColorTheme.Provider<any, any> = {
+const pLDDTColorThemeProvider: any = {
     name: 'plddt-confidence',
     label: 'pLDDT Confidence',
     category: ColorTheme.Category.Validation,
-    factory: (ctx: any, props: any) => {
-        return {
-            granularity: 'group',
-            color: (location: any) => {
-                // Get pLDDT value from the atom location
-                const pLDDT = location?.unit?.model?.atomicConformation?.B_iso_or_equiv?.value(location.element) || 0;
+    factory: (ctx: any, props: any) => ({
+        granularity: 'group',
+        color: (location: any) => {
+            // Get pLDDT value from the atom location
+            const pLDDT = location?.unit?.model?.atomicConformation?.B_iso_or_equiv?.value(location.element) || 0;
 
-                // Map pLDDT to confidence colors
-                if (pLDDT >= 90) return pLDDTColors.highConfidence;
-                if (pLDDT >= 70) return pLDDTColors.confident;
-                if (pLDDT >= 50) return pLDDTColors.lowConfidence;
-                return pLDDTColors.veryLowConfidence;
-            },
-            legend: TableLegend([
-                ['High Confidence (≥90)', pLDDTColors.highConfidence],
-                ['Confident (70-90)', pLDDTColors.confident],
-                ['Low Confidence (50-70)', pLDDTColors.lowConfidence],
-                ['Very Low (<50)', pLDDTColors.veryLowConfidence],
-            ]),
-        };
-    },
+            // Map pLDDT to confidence colors
+            if (pLDDT >= 90) return pLDDTColors.highConfidence;
+            if (pLDDT >= 70) return pLDDTColors.confident;
+            if (pLDDT >= 50) return pLDDTColors.lowConfidence;
+            return pLDDTColors.veryLowConfidence;
+        },
+        legend: TableLegend([
+            ['High Confidence (≥90)', pLDDTColors.highConfidence],
+            ['Confident (70-90)', pLDDTColors.confident],
+            ['Low Confidence (50-70)', pLDDTColors.lowConfidence],
+            ['Very Low (<50)', pLDDTColors.veryLowConfidence],
+        ]),
+        factory: (location: any) => location,
+        props: {},
+    }),
     getParams: () => ({}),
-    defaultValues: PD.getDefaultValues({}),
+    defaultValues: {},
     isApplicable: () => true,
 };
 
@@ -72,7 +72,7 @@ export default function Viewer({ url }: ViewerProps) {
 
                 // Register custom pLDDT color theme
                 plugin.representation.structure.themes.colorThemeRegistry.add(
-                    pLDDTColorThemeProvider as any
+                    pLDDTColorThemeProvider
                 );
 
                 pluginRef.current = plugin;
